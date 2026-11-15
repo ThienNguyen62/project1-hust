@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import BackendStatus from './components/BackendStatus.jsx'
 import heroImg from './assets/hero.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
@@ -30,6 +31,7 @@ function App() {
         </button>
       </section>
 
+      <BackendStatus />
       <div className="ticks"></div>
 
       <section id="next-steps">

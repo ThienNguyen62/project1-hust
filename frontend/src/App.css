@@ -1,3 +1,13 @@
+.backend-status {
+  padding: 24px 20px;
+  border-top: 1px solid var(--border);
+  overflow-wrap: anywhere;
+}
+
+.backend-status p { margin: 12px 0; }
+.backend-status code { display: inline; }
+.backend-status button:disabled { opacity: 0.6; cursor: wait; }
+
 .counter {
   font-size: 16px;
   padding: 5px 10px;

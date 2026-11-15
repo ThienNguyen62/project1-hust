@@ -203,3 +203,63 @@ Nhấn Ctrl+C trong terminal backend. Lần sau chỉ cần vào backend và ch�
 - [ ] Đã dừng server sau khi test.
 
 Kiểm tra ngày 14/11/2026: package, health 200, JSON response, dotenv, CORS, route 404 và JSON sai 400 đều đạt bằng Node fetch/assert trên cổng tạm; server thử nghiệm đã đóng. Kiểm tra browser CORS ở trên dành cho người dùng thực hiện. Backend chưa có script npm test và chưa kết nối SQL Server.
+
+# Chạy frontend kết nối backend
+
+Không cần cài thêm package: frontend dùng `fetch` có sẵn trong trình duyệt.
+
+## 1. Cấu hình lần đầu
+
+Frontend mặc định gọi `http://localhost:3000`. Nếu muốn cấu hình rõ ràng, trong terminal tại `frontend`, chạy lệnh sau **chỉ khi chưa có .env**:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+File `frontend/.env`:
+
+```env
+VITE_API_URL=http://localhost:3000
+```
+
+File `backend/.env`:
+
+```env
+PORT=3000
+CLIENT_ORIGIN=http://localhost:5173
+```
+
+VITE_API_URL là địa chỉ backend; CLIENT_ORIGIN là origin frontend. Không đặt bí mật trong biến VITE_. Sau khi thay đổi .env, khởi động lại server tương ứng.
+
+## 2. Mở hai terminal
+
+Terminal thứ nhất, từ gốc project:
+
+```powershell
+cd backend
+npm run dev
+```
+
+Terminal thứ hai, từ gốc project:
+
+```powershell
+cd frontend
+npm run dev -- --port 5173 --strictPort
+```
+
+Nếu terminal đã ở đúng thư mục thì bỏ qua cd. Nếu 5173 đang bận, dùng frontend đang chạy tại đó hoặc dừng phiên cũ của bạn. Không tự dùng origin khác mà chưa cập nhật CLIENT_ORIGIN.
+
+## 3. Test trên giao diện
+
+Mở `http://localhost:5173`, tìm phần **Kết nối backend** bên dưới nút đếm.
+
+| Thao tác | Kết quả cần đạt |
+| --- | --- |
+| Mở trang khi backend đang chạy | Hiện “Kết nối backend thành công” và “School Management API is running” |
+| F12 → Network, lọc health | Có GET tới localhost:3000/api/health, HTTP 200 |
+| Dừng backend bằng Ctrl+C, nhấn Kiểm tra lại | Hiện “Không kết nối được backend”; không kẹt ở trạng thái chờ quá 8 giây |
+| Chạy lại backend, nhấn Kiểm tra lại | Hiện kết nối thành công |
+
+Luồng xử lý: `BackendStatus.jsx` gọi API → route health của Express → controller trả JSON → React hiển thị. Kiểm tra này chưa sử dụng database. Giao diện báo trạng thái tại lần kiểm tra gần nhất, không tự theo dõi backend liên tục.
+
+Nếu báo lỗi: kiểm tra backend đang chạy, URL hiển thị trên giao diện và CLIENT_ORIGIN. Khi dùng preview ở cổng 4173, cần đổi CLIENT_ORIGIN tương ứng và khởi động lại backend.

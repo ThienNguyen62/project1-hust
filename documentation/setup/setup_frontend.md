@@ -144,9 +144,9 @@ Luồng mở trang: `index.html` → `src/main.jsx` → `src/App.jsx`. File `.js
 
 ## Có cần .env không?
 
-Hiện chưa cần. Khi kết nối API, có thể tạo `frontend/.env` với `VITE_API_URL` và đọc bằng `import.meta.env.VITE_API_URL`. Khởi động lại server sau khi sửa `.env`.
+Frontend đã có phần kiểm tra kết nối API. Mặc định gọi `http://localhost:3000`; có thể copy `frontend/.env.example` thành `frontend/.env` nếu chưa có file, rồi đặt `VITE_API_URL=http://localhost:3000`. Component đọc bằng `import.meta.env.VITE_API_URL`. Khởi động lại Vite sau khi sửa `.env`. Xem cách chạy cả hai phần trong [start.md](../start.md).
 
-Không đặt mật khẩu database hoặc khóa bí mật trong frontend. Khi bắt đầu dùng cấu hình môi trường, thêm `.env.example` chứa giá trị mẫu.
+Không đặt mật khẩu database hoặc khóa bí mật trong frontend. `.env.example` đã có giá trị mẫu và cần commit; `.env` được Git bỏ qua.
 
 ## Lỗi thường gặp
 
