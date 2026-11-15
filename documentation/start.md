@@ -206,6 +206,8 @@ Kiểm tra ngày 14/11/2026: package, health 200, JSON response, dotenv, CORS, r
 
 # Chạy frontend kết nối backend
 
+Database của project chọn MySQL. Hướng dẫn tạo database và cấu hình nằm trong [setup_database.md](./setup/setup_database.md). Sau khi điền cấu hình thật vào backend/.env, mở terminal trong backend và chạy `npm run db:check`; kết quả cần có `connected: 1`. Không cần database cho health API hiện tại.
+
 Không cần cài thêm package: frontend dùng `fetch` có sẵn trong trình duyệt.
 
 ## 1. Cấu hình lần đầu

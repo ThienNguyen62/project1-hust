@@ -1,5 +1,7 @@
 # School Management API
 
+Database được chọn hiện tại là **MySQL**, driver `mysql2` 3.24.6. Xem [hướng dẫn database](../documentation/setup/setup_database.md) để tạo database, tài khoản và điền DB_* vào .env. Chạy `npm run db:check` để kiểm tra SELECT 1. Những ghi chú SQL Server phía dưới là phạm vi bước thiết lập backend trước đây, không phải database được chọn hiện tại.
+
 ## 1. Cài đặt lần đầu
 
 Cần Node.js 24 và npm. Từ thư mục gốc repository:
