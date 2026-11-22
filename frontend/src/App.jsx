@@ -1,123 +1,75 @@
-import { useState } from 'react'
-import BackendStatus from './components/BackendStatus.jsx'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
+﻿import { useEffect, useState } from 'react'
+import Sidebar from './components/Sidebar.jsx'
+import { HomePage, PlaceholderPage } from './components/DashboardPages.jsx'
+import Icon from './components/Icon.jsx'
+import { pages, home } from './navigation.js'
 import './App.css'
 
+function currentPage() {
+  return pages.find((page) => page.href === window.location.hash) ?? home
+}
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [page, setPage] = useState(currentPage)
+  const [collapsed, setCollapsed] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const [headerPanel, setHeaderPanel] = useState(null)
+
+  useEffect(() => {
+    function syncPage() {
+      setPage(currentPage())
+      setMobileOpen(false)
+      setHeaderPanel(null)
+    }
+    function closeOnEscape(event) {
+      if (event.key === 'Escape') {
+        setMobileOpen(false)
+        setHeaderPanel(null)
+      }
+    }
+    window.addEventListener('hashchange', syncPage)
+    window.addEventListener('keydown', closeOnEscape)
+    return () => {
+      window.removeEventListener('hashchange', syncPage)
+      window.removeEventListener('keydown', closeOnEscape)
+    }
+  }, [])
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <BackendStatus />
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+    <div className={`dashboard${collapsed ? ' is-collapsed' : ''}${mobileOpen ? ' is-mobile-open' : ''}`}>
+      {mobileOpen && (
+        <button className="scrim" aria-label="Đóng menu" onClick={() => setMobileOpen(false)} />
+      )}
+      <Sidebar page={page} collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)}
+        onClose={() => setMobileOpen(false)} onNavigate={() => setMobileOpen(false)} />
+      <div className="workspace">
+        <header className="topbar">
+          <button className="icon-button mobile-toggle" type="button" aria-controls="sidebar"
+            aria-expanded={mobileOpen} aria-label={mobileOpen ? 'Đóng menu' : 'Mở menu'}
+            onClick={() => setMobileOpen(!mobileOpen)}>
+            <Icon name="menu" />
+          </button>
+          <span className="breadcrumb"><Icon name="home" /> <span>{page.label}</span></span>
+          <div className="header-actions">
+            {[{ label: 'Thông báo', icon: 'bell' }, { label: 'Hồ sơ cá nhân', icon: 'user' }].map(({ label, icon }) => (
+              <button key={icon} className="icon-button" type="button" title={label} aria-label={label}
+                aria-expanded={headerPanel === label} aria-controls="header-panel"
+                onClick={() => setHeaderPanel(headerPanel === label ? null : label)}>
+                <Icon name={icon} />
+              </button>
+            ))}
+          </div>
+          <section id="header-panel" className="header-panel" hidden={!headerPanel}
+            aria-labelledby="header-panel-title">
+            <h2 id="header-panel-title">{headerPanel}</h2>
+            <p>Tính năng sẽ được bổ sung sau.</p>
+          </section>
+        </header>
+        <main className="content">
+          {page === home ? <HomePage /> : <PlaceholderPage page={page} />}
+        </main>
+      </div>
+    </div>
   )
 }
 

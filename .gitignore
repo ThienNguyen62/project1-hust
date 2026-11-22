@@ -431,3 +431,4 @@ FodyWeavers.xsd
 .env
 .env.*
 !.env.example
+/.agents/
