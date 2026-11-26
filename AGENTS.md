@@ -2,6 +2,8 @@
 
 ## Bối cảnh
 
+- Khi làm một chức năng đã có, tra mục lục `documentation/note/README.md` trước. Đối chiếu các file liên quan trực tiếp và cập nhật note khi hành vi thay đổi.
+
 - Project I xây dựng website quản lý trường THPT. MVP có hai tác nhân là Admin và GVCN.
 - Đọc `documentation/requirements.md` để hiểu nghiệp vụ và `.agents/progress.md` để xác định bước đang làm nếu file có trên máy.
 - Khi đề cương, mã nguồn và tiến độ khác nhau, nêu khác biệt và bằng chứng. Phạm vi tác nhân MVP theo xác nhận của người học.

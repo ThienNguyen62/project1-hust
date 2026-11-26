@@ -1,4 +1,4 @@
-function isValidDate(value) {
+export function isValidDate(value) {
   if (typeof value !== 'string' || !/^[1-9]\d{3}-\d{2}-\d{2}$/.test(value)) return false;
   const date = new Date(`${value}T00:00:00Z`);
   return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value;
@@ -64,7 +64,7 @@ export class AcademicYearService {
       if (await this.repository.remove(id)) return { status: 200, data: { id } };
       return { status: 404, message: 'Không tìm thấy năm học.' };
     } catch (error) {
-      if (error.code === 'ER_ROW_IS_REFERENCED_2') {
+      if (['ER_ROW_IS_REFERENCED', 'ER_ROW_IS_REFERENCED_2'].includes(error.code)) {
         return { status: 409, message: 'Không thể xóa năm học đã có lớp hoặc dữ liệu liên quan.' };
       }
       throw error;

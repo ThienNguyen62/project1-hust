@@ -79,4 +79,46 @@ SELECT @seed_nam_hoc_id, '10-MAU', 'Lớp 10 mẫu', 10
 WHERE @seed_nam_hoc_id IS NOT NULL;
 
 -- seed:statement
+-- Năm học và ba khối dành cho kiểm thử danh sách lớp
+INSERT INTO NAM_HOC (MaNamHoc, TuNgay, DenNgay)
+SELECT '2029-2030', '2029-09-05', '2030-05-31'
+WHERE NOT EXISTS (SELECT 1 FROM NAM_HOC WHERE MaNamHoc = '2029-2030');
+
+-- seed:statement
+SET @seed_nam_hoc_id = IF(ROW_COUNT() = 1, LAST_INSERT_ID(), NULL);
+
+-- seed:statement
+INSERT INTO LOP_HOC (NamHocID, MaLop, TenLop, Khoi)
+SELECT @seed_nam_hoc_id, '10A1', 'Lớp 10A1', 10 WHERE @seed_nam_hoc_id IS NOT NULL
+UNION ALL
+SELECT @seed_nam_hoc_id, '11A1', 'Lớp 11A1', 11 WHERE @seed_nam_hoc_id IS NOT NULL
+UNION ALL
+SELECT @seed_nam_hoc_id, '12A1', 'Lớp 12A1', 12 WHERE @seed_nam_hoc_id IS NOT NULL;
+
+-- seed:statement
+-- Buổi mẫu để kiểm thử quy tắc không xóa lớp đã được tham chiếu
+INSERT INTO BUOI_DIEM_DANH (LopHocID, NgayHoc, Buoi, TrangThai)
+SELECT LopHocID, '2029-09-10', 'AM', 'PLANNED'
+FROM LOP_HOC WHERE NamHocID = @seed_nam_hoc_id AND MaLop = '12A1';
+
+-- seed:statement
+-- 24 lớp cho kiểm thử thống kê, tìm kiếm và phân trang theo ba khối.
+INSERT INTO NAM_HOC (MaNamHoc, TuNgay, DenNgay)
+SELECT '2030-2031', '2030-09-05', '2031-05-31'
+WHERE NOT EXISTS (SELECT 1 FROM NAM_HOC WHERE MaNamHoc = '2030-2031');
+
+-- seed:statement
+SET @seed_nam_hoc_id = IF(ROW_COUNT() = 1, LAST_INSERT_ID(), NULL);
+
+-- seed:statement
+INSERT INTO LOP_HOC (NamHocID, MaLop, TenLop, Khoi)
+SELECT @seed_nam_hoc_id, CONCAT(Khoi, 'A', SoLop), CONCAT('Lớp ', Khoi, 'A', SoLop), Khoi
+FROM (SELECT 10 AS Khoi UNION ALL SELECT 11 UNION ALL SELECT 12) AS KhoiMau
+CROSS JOIN (
+    SELECT 1 AS SoLop UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4
+    UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8
+) AS LopMau
+WHERE @seed_nam_hoc_id IS NOT NULL;
+
+-- seed:statement
 COMMIT;

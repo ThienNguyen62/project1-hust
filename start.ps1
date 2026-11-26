@@ -66,7 +66,7 @@ try {
 
     $apiUrl = "http://localhost:$apiPort/api"
     $backendRunning = Test-LocalPort $apiPort
-    $frontendRunning = Test-LocalPort 5173
+    $frontendRunning = Test-LocalPort 5174
     if (-not ($backendRunning -and $frontendRunning)) {
         New-Item -ItemType Directory -Path $logs | Out-Null
     }

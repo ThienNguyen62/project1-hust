@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { deleteAcademicYear, listAcademicYears, saveAcademicYear } from '../api/academic-years.js'
 import './AcademicYearsPage.css'
+import Semesters from './Semesters.jsx'
 
 const emptyForm = { startYear: '', startDate: '', endDate: '', note: '', createSemesters: true }
 const statuses = { upcoming: 'Sắp diễn ra', active: 'Đang diễn ra', ended: 'Đã kết thúc' }
@@ -24,6 +25,8 @@ export default function AcademicYearsPage() {
   const [saveError, setSaveError] = useState('')
   const [notice, setNotice] = useState('')
   const [editing, setEditing] = useState(null)
+  const [semesterYear, setSemesterYear] = useState(null)
+  const semesterDialog = useRef(null)
   const [deleting, setDeleting] = useState(null)
   const [deleteError, setDeleteError] = useState('')
   const [search, setSearch] = useState('')
@@ -202,6 +205,12 @@ export default function AcademicYearsPage() {
         </form>
       </dialog>
 
+      <dialog ref={semesterDialog} className="academic-years-dialog" aria-label="Quản lý học kỳ"
+        onClose={() => { setSemesterYear(null); retryLoad() }}>
+        {semesterYear && <><h2>Học kỳ · {semesterYear.code}</h2><Semesters year={semesterYear} /></>}
+        <button type="button" onClick={() => semesterDialog.current.close()}>Đóng</button>
+      </dialog>
+
       <div className="academic-years-card">
         <h2>Danh sách năm học</h2>
         {years.length > 0 && (
@@ -244,6 +253,10 @@ export default function AcademicYearsPage() {
                     <td>{year.semesterCount}</td>
                     <td className="academic-years-note-cell">{year.note || '—'}</td>
                     <td className="academic-years-row-actions">
+                      <button type="button" onClick={() => {
+                        setSemesterYear(year)
+                        semesterDialog.current.showModal()
+                      }}>Học kỳ</button>
                       <button type="button" aria-label={`Sửa năm học ${year.code}`}
                         onClick={() => openForm(year)}>Sửa</button>
                       <button type="button" aria-label={`Xóa năm học ${year.code}`}
