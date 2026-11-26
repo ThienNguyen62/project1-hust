@@ -1,0 +1,88 @@
+.academic-years { display: grid; gap: 16px; min-width: 0; }
+.academic-years-card {
+  padding: 20px;
+  border: 1px solid #e3def1;
+  border-radius: 12px;
+  background: #fff;
+}
+.academic-years-dialog fieldset { min-width: 0; padding: 0; border: 0; }
+.academic-years-card h2,
+.academic-years-card legend { margin-bottom: 12px; font-size: 1.1rem; font-weight: 700; }
+.academic-years-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  gap: 12px;
+}
+.academic-years-fields label { display: grid; gap: 4px; }
+.academic-years-fields input,
+.academic-years-note textarea,
+.academic-years-filters input,
+.academic-years-filters select {
+  width: 100%;
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid #aaa2bc;
+  border-radius: 6px;
+  font: inherit;
+}
+.academic-years button {
+  margin-top: 12px;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 6px;
+  background: #5738a1;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
+.academic-years button:disabled { opacity: .65; cursor: default; }
+.academic-years-card p { margin-top: 8px; }
+.academic-years [role="alert"] { color: #a22434; }
+.academic-years-table { overflow-x: auto; }
+.academic-years-table table { width: 100%; border-collapse: collapse; text-align: left; }
+.academic-years-table th,
+.academic-years-table td { padding: 8px; border-bottom: 1px solid #e3def1; }
+
+.academic-years-header, .academic-years-filters, .academic-years-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.academic-years-header { justify-content: space-between; }
+.academic-years-header button { margin-top: 0; }
+.academic-years-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+  gap: 12px;
+  margin: 0;
+}
+.academic-years-summary dd { margin: 6px 0 0; color: #5738a1; font-size: 1.35rem; font-weight: 700; }
+.academic-years-filters { margin-bottom: 12px; }
+.academic-years-filters input { flex: 1 1 12rem; }
+.academic-years-filters select { width: auto; }
+.academic-years-status { display: inline-block; padding: 2px 8px; border-radius: 6px; background: #eeeaf5; }
+.academic-years-status[data-status="active"] { background: #e2f5e9; color: #175937; }
+.academic-years-status[data-status="upcoming"] { background: #fff2db; color: #79440e; }
+.academic-years-note-cell { min-width: 8rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+.academic-years-dialog {
+  width: min(36rem, calc(100% - 24px));
+  max-height: calc(100dvh - 24px);
+  margin: auto;
+  padding: 24px;
+  border: 1px solid #e3def1;
+  border-radius: 16px;
+  background: #fff;
+  color: inherit;
+}
+.academic-years-dialog::backdrop { background: rgb(23 16 43 / 55%); }
+.academic-years-dialog h2 { margin-bottom: 16px; }
+.academic-years-dialog p { margin-top: 8px; }
+.academic-years-checkbox { display: flex; align-items: center; gap: 8px; margin-top: 14px; }
+.academic-years-note { display: grid; gap: 4px; margin-top: 14px; }
+.academic-years-note textarea { resize: vertical; }
+.academic-years-actions { justify-content: flex-end; }
+.academic-years-actions button[type="button"] { background: #eeeaf5; color: #372467; }
+.academic-years-row-actions { white-space: nowrap; }
+.academic-years-row-actions button { margin: 0 4px 0 0; padding: 4px 8px; }
+.academic-years-row-actions button:last-child { background: #fbecef; color: #9a2235; }

@@ -1,8 +1,9 @@
 ﻿import { useEffect, useState } from 'react'
 import Sidebar from './components/Sidebar.jsx'
+import AcademicYearsPage from './components/AcademicYearsPage.jsx'
 import { HomePage, PlaceholderPage } from './components/DashboardPages.jsx'
 import Icon from './components/Icon.jsx'
-import { pages, home } from './navigation.js'
+import { pages, home, academicYears } from './navigation.js'
 import './App.css'
 
 function currentPage() {
@@ -66,7 +67,9 @@ function App() {
           </section>
         </header>
         <main className="content">
-          {page === home ? <HomePage /> : <PlaceholderPage page={page} />}
+          {page === home && <HomePage />}
+          {page === academicYears && <AcademicYearsPage />}
+          {page !== home && page !== academicYears && <PlaceholderPage page={page} />}
         </main>
       </div>
     </div>
